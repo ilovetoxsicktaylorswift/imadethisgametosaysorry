@@ -135,6 +135,15 @@ function initGame() {
   restartBtn.style.display = 'none';
 }
 
+  function startMusic() {
+  if (bgMusic.paused) {
+    bgMusic.play().catch(e => {
+      console.log("Playback prevented:", e);
+    });
+  }
+}
+
+
 function drawPlayer() {
   ctx.drawImage(playerImg, player.x, player.y, player.width, player.height);
 }
@@ -234,11 +243,12 @@ function update() {
   }
 }
 
-function moveRight() { player.dx = player.speed; }
-function moveLeft() { player.dx = -player.speed; }
+function moveRight() {startMusic(); player.dx = player.speed; }
+function moveLeft() {startMusic(); player.dx = -player.speed; }
 function stopMove() { player.dx = 0; }
 
 function shoot() {
+  startMusic();
   bullets.push({ x: player.x + player.width / 2 - 2.5, y: player.y, speed: 7 });
   shootSound.play();
 }
