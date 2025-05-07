@@ -23,9 +23,13 @@
       height: auto;
     }
 
+    .restart-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
     #restartBtn {
       display: none;
-      margin-top: 10px;
       padding: 10px 20px;
       font-size: 18px;
       background-color: red;
@@ -78,7 +82,10 @@
 <p>Use Arrow Keys or Buttons to play</p>
 <canvas id="gameCanvas"></canvas>
 <div id="levelUpText">NEXT LEVEL!</div>
-<button id="restartBtn" onclick="restartGame()">Restart</button>
+<div class="restart-container">
+  <button id="restartBtn" onclick="restartGame()">Restart</button>
+</div>
+
 <div id="mobileControls">
   <button class="btn" ontouchstart="moveLeft()" ontouchend="stopMove()">◀ Left</button>
   <button class="btn" ontouchstart="shoot()">🔥 Shoot</button>
