@@ -130,7 +130,7 @@ function initGame() {
   bullets = [];
   enemies = [];
   score = 0;
-  enemySpeed = 0.4;
+  enemySpeed = 2;
   gameOver = false;
   restartBtn.style.display = 'none';
 }
@@ -194,7 +194,7 @@ function checkCollisions() {
         score++;
 
         if (score % 10 === 0) {
-          enemySpeed += 0.29;
+          enemySpeed += 0.4;
           showLevelUpText();
         }
       }
