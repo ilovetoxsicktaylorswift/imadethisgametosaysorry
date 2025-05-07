@@ -1,39 +1,31 @@
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Space Shooter</title>
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Space Shooter</title>
   <style>
     body {
+      margin: 0;
       text-align: center;
       color: white;
       font-family: sans-serif;
-      background: black;
-      margin: 0;
+      background-color: black;
       overflow: hidden;
     }
+
     canvas {
       background: url('https://www.transparenttextures.com/patterns/stardust.png') repeat black;
       display: block;
       margin: 0 auto;
-      touch-action: none;
+      max-width: 100%;
+      height: auto;
     }
-    #controls {
+
+    #restartBtn {
+      display: none;
       margin-top: 10px;
-    }
-    .btn {
-      padding: 10px 15px;
-      margin: 5px;
-      font-size: 18px;
-      background: #444;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      width: 80px;
-      cursor: pointer;
-    }
-    #startBtn, #restartBtn {
-      margin-top: 20px;
       padding: 10px 20px;
       font-size: 18px;
       background-color: red;
@@ -42,7 +34,6 @@
       border-radius: 5px;
       cursor: pointer;
     }
-    #restartBtn { display: none; }
 
     #levelUpText {
       position: absolute;
@@ -56,26 +47,43 @@
       display: none;
       pointer-events: none;
     }
+
     @keyframes fadeOut {
       0% { opacity: 1; }
       100% { opacity: 0; }
+    }
+
+    #mobileControls {
+      position: fixed;
+      bottom: 10px;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      z-index: 10;
+    }
+
+    .btn {
+      padding: 12px 20px;
+      margin: 0 8px;
+      font-size: 16px;
+      background-color: #444;
+      color: white;
+      border: none;
+      border-radius: 8px;
     }
   </style>
 </head>
 <body>
 <h1>Space Shooter Game</h1>
-<canvas id="gameCanvas" width="600" height="400"></canvas>
-
+<p>Use Arrow Keys or Buttons to play</p>
+<canvas id="gameCanvas"></canvas>
 <div id="levelUpText">NEXT LEVEL!</div>
-
-<div id="controls">
+<button id="restartBtn" onclick="restartGame()">Restart</button>
+<div id="mobileControls">
   <button class="btn" ontouchstart="moveLeft()" ontouchend="stopMove()">◀ Left</button>
   <button class="btn" ontouchstart="shoot()">🔥 Shoot</button>
   <button class="btn" ontouchstart="moveRight()" ontouchend="stopMove()">▶ Right</button>
 </div>
-
-<button id="startBtn" onclick="startGame()">Start Game</button>
-<button id="restartBtn" onclick="restartGame()">Restart</button>
 
 <script>
 const bgMusic = new Audio('./bg.mp3');
@@ -84,7 +92,6 @@ bgMusic.loop = true;
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 const restartBtn = document.getElementById('restartBtn');
-const startBtn = document.getElementById('startBtn');
 const levelUpText = document.getElementById('levelUpText');
 
 const playerImg = new Image();
@@ -93,10 +100,17 @@ playerImg.src = 'https://i.postimg.cc/t7QLQZVB/Main-Ship-Base-Full-health.png';
 const enemyImg = new Image();
 enemyImg.src = 'https://i.postimg.cc/d0DRKqcC/Main-Ship-Base-Slight-damage.png';
 
-let player, bullets, enemies, score, gameOver, enemySpeed, gameStarted = false;
+let player, bullets, enemies, score, gameOver, enemySpeed;
 
 const shootSound = new Audio('https://actions.google.com/sounds/v1/alarms/beep_short.ogg');
 const explosionSound = new Audio('./explosion.wav');
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight * 0.75;
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
 
 function initGame() {
   player = {
@@ -172,6 +186,7 @@ function checkCollisions() {
         enemies.splice(eIndex, 1);
         explosionSound.play();
         score++;
+
         if (score % 10 === 0) {
           enemySpeed += 0.29;
           showLevelUpText();
@@ -222,23 +237,13 @@ function shoot() {
   shootSound.play();
 }
 
-function startGame() {
-  if (!gameStarted) {
-    bgMusic.play();
-    initGame();
-    update();
-    gameStarted = true;
-    startBtn.style.display = 'none';
-  }
-}
-
 function restartGame() {
   initGame();
   update();
 }
 
 window.addEventListener('keydown', (e) => {
-  if (!gameStarted) startGame();
+  if (bgMusic.paused) bgMusic.play();
   if (e.key === 'ArrowRight') moveRight();
   else if (e.key === 'ArrowLeft') moveLeft();
   else if (e.key === ' ') shoot();
@@ -247,6 +252,9 @@ window.addEventListener('keydown', (e) => {
 window.addEventListener('keyup', (e) => {
   if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') stopMove();
 });
+
+initGame();
+update();
 </script>
 </body>
 </html>
