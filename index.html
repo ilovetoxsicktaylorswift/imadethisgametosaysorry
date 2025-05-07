@@ -49,6 +49,9 @@
 <div id="levelUpText">NEXT LEVEL!</div>
 <button id="restartBtn" onclick="restartGame()">Restart</button>
 <script>
+const bgMusic = new Audio('./bg.mp3');
+bgMusic.loop = true;
+
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 const restartBtn = document.getElementById('restartBtn');
