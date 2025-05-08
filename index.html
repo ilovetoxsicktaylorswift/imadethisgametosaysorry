@@ -210,7 +210,7 @@ function checkCollisions() {
         explosionSound.play();
         score++;
 
-        if (score === 42) {
+        if (score === 10) {
   bgMusic.pause();
   newBgMusic.play();
   showDramaticMessage();
@@ -289,18 +289,32 @@ initGame();
 update();
 </script>
   <div id="messageOverlay" style="
-  display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-  background: rgba(0, 0, 0, 0.9); color: white; z-index: 9999;
-  justify-content: center; align-items: center;
-  text-align: center; padding: 20px; font-size: 22px; font-family: 'Georgia', serif;
-  line-height: 1.6; animation: fadeIn 3s ease-in-out;">
-  <div>
-    <p style="color: yellow; font-size: 28px;">"ami jeta korsi na jene korsi."</p>
-    <p>"ami bujhi nai."</p>
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.9);
+  color: white;
+  z-index: 9999;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+  box-sizing: border-box;
+  font-size: 5vw;
+  font-family: 'Georgia', serif;
+  line-height: 1.5;
+  overflow-y: auto;
+  animation: fadeIn 3s ease-in-out;
+">
+  <div style="max-width: 90%; word-wrap: break-word;">
+    <p style="color: yellow; font-size: 6vw;">"ami jeta korsi na bujhe korsi."</p>
     <p>"i think i can confront what i did."</p>
     <p>"can we please talk again <strong>(pls pls)</strong>"</p>
-    <p>"(ager moto na holeo cholbe.)"</p>
-    <p>"(ar ami just bolar sorry jonno boli nai. i meant it.)"</p>
+    <p>"(ager moto na holeo cholbe as u have exams.)"</p>
+    <p>"(ar ami just bolar jonno sorru boli nai. i meant it.)"</p>
+    <p>"(i would love to see ur gliterring black shoes again.)"</p>
   </div>
 </div>
 
@@ -309,6 +323,17 @@ update();
   from { opacity: 0; }
   to { opacity: 1; }
 }
+
+  @media (max-width: 400px) {
+  #messageOverlay {
+    font-size: 4.5vw !important;
+  }
+
+  #messageOverlay div p {
+    font-size: 5vw !important;
+  }
+}
+  
 </style>
 
 </body>
