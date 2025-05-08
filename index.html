@@ -236,13 +236,16 @@ function drawScore() {
 function drawGameOver() {
   ctx.fillStyle = 'red';
   ctx.font = '40px Arial';
-  ctx.fillText('GAME OVER', canvas.width / 2 - 120, canvas.height / 2);
+  ctx.fillText('GAME OVER', canvas.width / 2 - 120, canvas.height / 2 - 30);
 
 ctx.fillStyle = 'white';
   ctx.font = '30px Arial';
-  ctx.fillText('Final Score: ' + score, canvas.width / 2 - 100, canvas.height / 2 + 50);
+  ctx.fillText('Final Score: ' + score, canvas.width / 2 - 100, canvas.height / 2 + 20);
   
   restartBtn.style.display = 'inline-block';
+  restartBtn.style.position = 'absolute';
+  restartBtn.style.left = (canvas.getBoundingClientRect().left + canvas.width / 2 - restartBtn.offsetWidth / 2) + 'px';
+  restartBtn.style.top = (canvas.getBoundingClientRect().top + canvas.height / 2 + 60) + 'px';
 }
 
 function update() {
@@ -318,7 +321,7 @@ update();
     <p>"i think i can confront what i did."</p>
     <p>"can we please talk again <strong>(pls pls)</strong>"</p>
     <p>"(ager moto na holeo cholbe as u have exams.)"</p>
-    <p>"(ar ami just bolar jonno sorru boli nai. i meant it.)"</p>
+    <p>"(ar ami just bolar jonno sorry boli nai. i meant it.)"</p>
     <p>"(i would love to see ur gliterring black shoes again.)"</p>
   </div>
 </div>
