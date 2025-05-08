@@ -197,7 +197,7 @@ function initGame() {
   bullets = [];
   enemies = [];
   score = 0;
-  enemySpeed = 1.4;
+  enemySpeed = 0.8;
   gameOver = false;
   restartBtn.style.display = 'none';
   gameOverContainer.style.display = 'none';
@@ -289,7 +289,7 @@ function checkCollisions() {
         explosionSound.play();
         score++;
 
-        if (score === 43) {
+        if (score === 8) {
           bgMusic.pause();
           newBgMusic.play();
           showDramaticMessage();
