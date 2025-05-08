@@ -164,8 +164,8 @@ function spawnEnemies() {
     const enemy = {
       x: Math.random() * (canvas.width - 30),
       y: 0,
-      width: 45,
-      height: 45,
+      width: 37,
+      height: 37,
       speed: enemySpeed
     };
     enemies.push(enemy);
@@ -210,7 +210,7 @@ function checkCollisions() {
         explosionSound.play();
         score++;
 
-        if (score === 20) {
+        if (score === 42) {
   bgMusic.pause();
   newBgMusic.play();
   showDramaticMessage();
