@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,23 +22,21 @@
       height: auto;
     }
 
- 
     #restartBtn {
-  display: none;
-  position: absolute;
-  top: 60%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  padding: 12px 24px;
-  font-size: 18px;
-  background-color: red;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  z-index: 10;
-}
-
+      display: none;
+      position: absolute;
+      top: 70%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      padding: 12px 24px;
+      font-size: 18px;
+      background-color: red;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      z-index: 10;
+    }
 
     #levelUpText {
       position: absolute;
@@ -77,6 +74,27 @@
       border: none;
       border-radius: 8px;
     }
+    
+    /* Game Over Container */
+    #gameOverContainer {
+      display: none;
+      position: absolute;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 80%;
+      text-align: center;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      #gameOverContainer {
+        top: 35%;
+      }
+      #restartBtn {
+        top: 65%;
+      }
+    }
   </style>
 </head>
 <body>
@@ -84,6 +102,10 @@
 <p>Use Arrow Keys or Buttons to play</p>
 <canvas id="gameCanvas"></canvas>
 <div id="levelUpText">NEXT LEVEL!</div>
+
+<!-- Game over container to hold text -->
+<div id="gameOverContainer"></div>
+
 <button id="restartBtn" onclick="restartGame()">Restart</button>
 <div id="mobileControls">
   <button class="btn" ontouchstart="moveLeft()" ontouchend="stopMove()">◀ Left</button>
@@ -101,6 +123,7 @@ const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 const restartBtn = document.getElementById('restartBtn');
 const levelUpText = document.getElementById('levelUpText');
+const gameOverContainer = document.getElementById('gameOverContainer');
 
 const playerImg = new Image();
 playerImg.src = 'https://i.postimg.cc/t7QLQZVB/Main-Ship-Base-Full-health.png';
@@ -109,6 +132,7 @@ const enemyImg = new Image();
 enemyImg.src = 'https://i.postimg.cc/d0DRKqcC/Main-Ship-Base-Slight-damage.png';
 
 let player, bullets, enemies, score, gameOver, enemySpeed;
+let imagesLoaded = false;
 
 const shootSound = new Audio('https://actions.google.com/sounds/v1/alarms/beep_short.ogg');
 const explosionSound = new Audio('./explosion.wav');
@@ -119,6 +143,47 @@ function resizeCanvas() {
 }
 window.addEventListener('resize', resizeCanvas);
 resizeCanvas();
+
+// Loading screen function
+function drawLoadingScreen() {
+  ctx.fillStyle = 'black';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = 'white';
+  ctx.font = '24px Arial';
+  ctx.fillText('Loading...', canvas.width/2 - 50, canvas.height/2);
+}
+
+// Draw loading screen immediately
+drawLoadingScreen();
+
+// Wait for images to load before starting game
+let loadedImages = 0;
+const totalImages = 2;
+
+function checkAllImagesLoaded() {
+  loadedImages++;
+  if (loadedImages === totalImages) {
+    imagesLoaded = true;
+    initGame();
+    update();
+  }
+}
+
+playerImg.onload = checkAllImagesLoaded;
+playerImg.onerror = function() {
+  console.error("Player image failed to load");
+  // Use a fallback colored rectangle
+  playerImg.fallback = true;
+  checkAllImagesLoaded();
+};
+
+enemyImg.onload = checkAllImagesLoaded;
+enemyImg.onerror = function() {
+  console.error("Enemy image failed to load");
+  // Use a fallback colored rectangle
+  enemyImg.fallback = true;
+  checkAllImagesLoaded();
+};
 
 function initGame() {
   player = {
@@ -135,9 +200,11 @@ function initGame() {
   enemySpeed = 2;
   gameOver = false;
   restartBtn.style.display = 'none';
+  gameOverContainer.style.display = 'none';
+  gameOverContainer.innerHTML = '';
 }
 
-  function startMusic() {
+function startMusic() {
   if (bgMusic.paused) {
     bgMusic.play().catch(e => {
       console.log("Playback prevented:", e);
@@ -145,9 +212,14 @@ function initGame() {
   }
 }
 
-
 function drawPlayer() {
-  ctx.drawImage(playerImg, player.x, player.y, player.width, player.height);
+  if (playerImg.fallback) {
+    // Draw a colored rectangle as fallback
+    ctx.fillStyle = 'blue';
+    ctx.fillRect(player.x, player.y, player.width, player.height);
+  } else {
+    ctx.drawImage(playerImg, player.x, player.y, player.width, player.height);
+  }
 }
 
 function drawBullets() {
@@ -175,7 +247,15 @@ function spawnEnemies() {
 function drawEnemies() {
   enemies.forEach((enemy, eIndex) => {
     enemy.y += enemy.speed;
-    ctx.drawImage(enemyImg, enemy.x, enemy.y, enemy.width, enemy.height);
+    
+    if (enemyImg.fallback) {
+      // Draw a colored rectangle as fallback
+      ctx.fillStyle = 'red';
+      ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
+    } else {
+      ctx.drawImage(enemyImg, enemy.x, enemy.y, enemy.width, enemy.height);
+    }
+    
     if (enemy.y > canvas.height) {
       enemies.splice(eIndex, 1);
       gameOver = true;
@@ -190,11 +270,10 @@ function showLevelUpText() {
   }, 2000);
 }
 
-  function showDramaticMessage() {
+function showDramaticMessage() {
   const msgOverlay = document.getElementById('messageOverlay');
   msgOverlay.style.display = 'flex';
 }
-
 
 function checkCollisions() {
   bullets.forEach((bullet, bIndex) => {
@@ -211,12 +290,12 @@ function checkCollisions() {
         score++;
 
         if (score === 43) {
-  bgMusic.pause();
-  newBgMusic.play();
-  showDramaticMessage();
-  gameOver = true;
-  return;
-}
+          bgMusic.pause();
+          newBgMusic.play();
+          showDramaticMessage();
+          gameOver = true;
+          return;
+        }
 
         if (score % 10 === 0) {
           enemySpeed += 0.4;
@@ -234,25 +313,19 @@ function drawScore() {
 }
 
 function drawGameOver() {
+  // Clear canvas
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
   
-  ctx.fillStyle = 'red';
-  ctx.font = '40px Arial';
-  ctx.fillText('GAME OVER', canvas.width / 2 - 120, canvas.height / 2);
+  // Use the game over container instead of drawing directly on canvas
+  gameOverContainer.style.display = 'block';
+  gameOverContainer.innerHTML = `
+    <div style="color: red; font-size: 40px; margin-bottom: 20px;">GAME OVER</div>
+    <div style="color: white; font-size: 30px; margin-bottom: 40px;">Final Score: ${score}</div>
+  `;
   
-
-  // Draw "Final Score"
-  ctx.fillStyle = 'white';
-  ctx.font = '30px Arial';
-  ctx.fillText('Final Score: ' + score, canvas.width / 2 - 100, canvas.height / 2 + 50);
-
-  // Position the restart button below score text
+  // Show restart button
   restartBtn.style.display = 'inline-block';
-  restartBtn.style.position = 'absolute';
-  restartBtn.style.left = (canvas.getBoundingClientRect().left + canvas.width / 2 - restartBtn.offsetWidth / 2) + 'px';
-  restartBtn.style.top = (canvas.getBoundingClientRect().top + canvas.height / 2 + 60) + 'px';
-
 }
-
 
 function update() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -299,8 +372,21 @@ window.addEventListener('keyup', (e) => {
   if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') stopMove();
 });
 
-initGame();
-update();
+// Instead of immediately starting game, wait for images
+// The checkAllImagesLoaded function will call initGame() and update() when ready
+
+// Error handling for audio
+bgMusic.onerror = function() { 
+  console.error("Background music failed to load");
+};
+
+shootSound.onerror = function() {
+  console.error("Shoot sound failed to load");
+};
+
+explosionSound.onerror = function() {
+  console.error("Explosion sound failed to load");
+};
 </script>
   <div id="messageOverlay" style="
   display: none;
