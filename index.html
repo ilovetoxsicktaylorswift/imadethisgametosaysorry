@@ -94,6 +94,8 @@
 <script>
 const bgMusic = new Audio('./bg.mp3');
 bgMusic.loop = true;
+const newBgMusic = new Audio('./bg2.mp3');
+newBgMusic.loop = true;
 
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
@@ -188,6 +190,12 @@ function showLevelUpText() {
   }, 2000);
 }
 
+  function showDramaticMessage() {
+  const msgOverlay = document.getElementById('messageOverlay');
+  msgOverlay.style.display = 'flex';
+}
+
+
 function checkCollisions() {
   bullets.forEach((bullet, bIndex) => {
     enemies.forEach((enemy, eIndex) => {
@@ -201,6 +209,14 @@ function checkCollisions() {
         enemies.splice(eIndex, 1);
         explosionSound.play();
         score++;
+
+        if (score === 45) {
+  bgMusic.pause();
+  newBgMusic.play();
+  showDramaticMessage();
+  gameOver = true;
+  return;
+}
 
         if (score % 10 === 0) {
           enemySpeed += 0.4;
@@ -272,5 +288,28 @@ window.addEventListener('keyup', (e) => {
 initGame();
 update();
 </script>
+  <div id="messageOverlay" style="
+  display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.9); color: white; z-index: 9999;
+  display: flex; justify-content: center; align-items: center;
+  text-align: center; padding: 20px; font-size: 22px; font-family: 'Georgia', serif;
+  line-height: 1.6; animation: fadeIn 3s ease-in-out;">
+  <div>
+    <p style="color: yellow; font-size: 28px;">"ami jeta korsi na jene korsi."</p>
+    <p>"ami bujhi nai."</p>
+    <p>"i think i can confront what i did."</p>
+    <p>"can we please talk again <strong>(pls pls)</strong>"</p>
+    <p>"(ager moto na holeo cholbe.)"</p>
+    <p>"(ar ami just bolar sorry jonno boli nai. i meant it.)"</p>
+  </div>
+</div>
+
+<style>
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+</style>
+
 </body>
 </html>
