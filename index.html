@@ -169,7 +169,7 @@
 
   <script>
   
-    const firebaseConfig = {
+  const firebaseConfig = {
   apiKey: "AIzaSyAYTp_-KB3H1oO5ACbiHLGDZv-UhdgoCkI",
   authDomain: "h-e-r-4fcdc.firebaseapp.com",
   projectId: "h-e-r-4fcdc",
@@ -180,8 +180,8 @@
 };
 
    
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
+   const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
 
   
     const messagesDiv = document.getElementById("messages");
@@ -294,4 +294,5 @@
   </script>
 </body>
 </html>
+
 
