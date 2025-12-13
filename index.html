@@ -2,20 +2,6 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Chat</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <style>
-    body {
-      font-family: system-ui, sans-serif;
-      background:#111827;
-      color:#e5e7eb;
-      margin:0;
-      display:flex;
-      justify-content:center;
-      align-items:center;<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
   <title>Private Chat</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
@@ -197,20 +183,21 @@
     </div>
   </div>
 
+  <!-- Firebase SDKs - Load ONLY ONCE -->
   <script src="https://www.gstatic.com/firebasejs/10.12.3/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.3/firebase-firestore-compat.js"></script>
 
   <script>
-    // ⚠️ REPLACE THIS WITH YOUR FIREBASE CONFIG
-   const firebaseConfig = {
-  apiKey: "AIzaSyAYTp_-KB3H1oO5ACbiHLGDZv-UhdgoCkI",
-  authDomain: "h-e-r-4fcdc.firebaseapp.com",
-  projectId: "h-e-r-4fcdc",
-  storageBucket: "h-e-r-4fcdc.firebasestorage.app",
-  messagingSenderId: "833496603768",
-  appId: "1:833496603768:web:8453e09a5239f7afd8e18d",
-  measurementId: "G-RNH6N1B944"
-};
+    // ⚠️ REPLACE WITH YOUR ACTUAL FIREBASE CONFIG FROM CONSOLE
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "h-e-r-4fcdc.firebaseapp.com",
+      projectId: "h-e-r-4fcdc",
+      storageBucket: "h-e-r-4fcdc.appspot.com",
+      messagingSenderId: "YOUR_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
+
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
@@ -223,11 +210,8 @@
     const saveNameBtn = document.getElementById("saveNameBtn");
     const statusDiv = document.getElementById("status");
 
-    // Use your own unique room ID - keep this secret!
-    const ROOM_ID = "secret_room_" + Math.random().toString(36).substr(2, 9);
-    // ⚠️ IMPORTANT: After first run, replace the line above with the actual room ID
-    // that gets logged to console, so both of you use the same room!
-    console.log("Room ID:", ROOM_ID);
+    // ⚠️ KEEP THIS ROOM ID THE SAME - Don't change it after first use!
+    const ROOM_ID = "noman_special_chat_2024";
 
     const NAME_KEY = "chat_username";
 
@@ -269,7 +253,13 @@
         (error) => {
           console.error("Connection error:", error);
           statusDiv.textContent = "Connection error ✗";
-          alert("Connection error. Check console and Firebase settings.");
+          
+          if (error.message && error.message.includes("index")) {
+            alert("⚠️ Firebase index needed! Click OK, then click the link in the console to create it.");
+            console.log("👉 CREATE INDEX HERE:", error.message.match(/https:\/\/[^\s]+/)[0]);
+          } else {
+            alert("Connection error. Check console.");
+          }
         }
       );
 
@@ -345,284 +335,3 @@
   </script>
 </body>
 </html>
-      min-height:100vh;
-    }
-    .chat-container {
-      width:100%;
-      max-width:500px;
-      height:80vh;
-      background:#020617;
-      border-radius:16px;
-      box-shadow:0 20px 40px rgba(0,0,0,0.5);
-      display:flex;
-      flex-direction:column;
-      overflow:hidden;
-      border:1px solid #1f2937;
-    }
-    .header {
-      padding:12px 16px;
-      background:#0f172a;
-      border-bottom:1px solid #1f2937;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      font-size:14px;
-    }
-    .header span {
-      font-weight:600;
-    }
-    .messages {
-      flex:1;
-      padding:12px;
-      overflow-y:auto;
-      display:flex;
-      flex-direction:column;
-      gap:8px;
-      scroll-behavior:smooth;
-    }
-    .msg {
-      max-width:80%;
-      padding:8px 10px;
-      border-radius:10px;
-      font-size:14px;
-      line-height:1.3;
-      word-wrap:break-word;
-      white-space:pre-wrap;
-    }
-    .me {
-      align-self:flex-end;
-      background:#4f46e5;
-      color:#e5e7eb;
-      border-bottom-right-radius:2px;
-    }
-    .other {
-      align-self:flex-start;
-      background:#111827;
-      border:1px solid #1f2937;
-      border-bottom-left-radius:2px;
-    }
-    .meta {
-      font-size:10px;
-      opacity:0.7;
-      margin-top:4px;
-    }
-    .input-area {
-      border-top:1px solid #1f2937;
-      padding:8px;
-      background:#020617;
-      display:flex;
-      flex-direction:column;
-      gap:6px;
-    }
-    .row {
-      display:flex;
-      gap:6px;
-    }
-    input, textarea, button {
-      font-family:inherit;
-      font-size:14px;
-    }
-    input, textarea {
-      background:#020617;
-      border:1px solid #374151;
-      color:#e5e7eb;
-      border-radius:8px;
-      padding:6px 8px;
-      outline:none;
-    }
-    input:focus, textarea:focus {
-      border-color:#6366f1;
-    }
-    textarea {
-      resize:none;
-      height:48px;
-    }
-    button {
-      border:none;
-      border-radius:8px;
-      padding:0 14px;
-      cursor:pointer;
-      background:#4f46e5;
-      color:#e5e7eb;
-      font-weight:600;
-      transition:transform 0.05s ease, box-shadow 0.05s ease, opacity 0.05s ease;
-      white-space:nowrap;
-    }
-    button:active {
-      transform:translateY(1px);
-      box-shadow:none;
-      opacity:0.8;
-    }
-    .name-input {
-      flex:1;
-    }
-    .small-note {
-      font-size:10px;
-      opacity:0.7;
-      text-align:center;
-    }
-  </style>
-</head>
-<body>
-  <div class="chat-container">
-    <div class="header">
-      <span>🌙 Private Chat</span>
-      <small id="status">Connecting…</small>
-    </div>
-
-    <div id="messages" class="messages"></div>
-
-    <div class="input-area">
-      <div class="row">
-        <input
-          id="nameInput"
-          class="name-input"
-          type="text"
-          placeholder="Your name (e.g. Noman)"
-        />
-        <button id="saveNameBtn" type="button">Set name</button>
-      </div>
-      <textarea
-        id="messageInput"
-        placeholder="Type a message…"
-      ></textarea>
-      <div class="row">
-        <button id="sendBtn" style="flex:1;">Send</button>
-      </div>
-      <div class="small-note">
-        Messages are stored with date &amp; time. Only people with this link can see them.
-      </div>
-    </div>
-  </div>
-
-  <!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.3/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.3/firebase-firestore-compat.js"></script>
-
-  <script>
-    // 1) REPLACE THIS CONFIG WITH YOURS FROM FIREBASE CONSOLE
-    const firebaseConfig = {
-      apiKey: "YOUR_API_KEY",
-      authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-      projectId: "YOUR_PROJECT_ID",
-      storageBucket: "YOUR_PROJECT_ID.appspot.com",
-      messagingSenderId: "YOUR_SENDER_ID",
-      appId: "YOUR_APP_ID"
-    };
-
-    // 2) Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
-
-    // UI elements
-    const messagesDiv = document.getElementById("messages");
-    const messageInput = document.getElementById("messageInput");
-    const sendBtn = document.getElementById("sendBtn");
-    const nameInput = document.getElementById("nameInput");
-    const saveNameBtn = document.getElementById("saveNameBtn");
-    const statusSpan = document.getElementById("status");
-
-    // 3) Load / save name in localStorage
-    const NAME_KEY = "chat_name";
-    function loadName() {
-      const saved = localStorage.getItem(NAME_KEY);
-      if (saved) {
-        nameInput.value = saved;
-      }
-    }
-    function saveName() {
-      const name = nameInput.value.trim();
-      if (!name) return alert("Please write a name.");
-      localStorage.setItem(NAME_KEY, name);
-      alert("Name saved!");
-    }
-    loadName();
-    saveNameBtn.addEventListener("click", saveName);
-
-    // 4) Listen for new messages in Firestore (realtime)
-    const messagesRef = db.collection("messages");
-    // If you want ONLY this chat room, you can add a fixed roomId
-    const roomId = "our_special_chat"; // constant
-    messagesRef
-      .where("roomId", "==", roomId)
-      .orderBy("createdAt")
-      .onSnapshot(
-        (snapshot) => {
-          statusSpan.textContent = "Online";
-          messagesDiv.innerHTML = "";
-          snapshot.forEach((doc) => {
-            const data = doc.data();
-            addMessageToUI(data);
-          });
-          messagesDiv.scrollTop = messagesDiv.scrollHeight;
-        },
-        (error) => {
-          console.error(error);
-          statusSpan.textContent = "Error";
-        }
-      );
-
-    // 5) Function to render one message
-    function addMessageToUI(data) {
-      const div = document.createElement("div");
-      div.classList.add("msg");
-
-      const myName = nameInput.value.trim();
-      const isMe = myName && data.name === myName;
-      div.classList.add(isMe ? "me" : "other");
-
-      const textSpan = document.createElement("div");
-      textSpan.textContent = data.text;
-
-      const meta = document.createElement("div");
-      meta.classList.add("meta");
-
-      let timeStr = "";
-      if (data.createdAt && data.createdAt.toDate) {
-        const d = data.createdAt.toDate();
-        timeStr = d.toLocaleString();
-      }
-
-      meta.textContent = `${data.name || "Someone"} • ${timeStr}`;
-      div.appendChild(textSpan);
-      div.appendChild(meta);
-
-      messagesDiv.appendChild(div);
-    }
-
-    // 6) Send a message
-    async function sendMessage() {
-      const name = nameInput.value.trim();
-      const text = messageInput.value.trim();
-
-      if (!name) {
-        alert("Please set your name first.");
-        return;
-      }
-      if (!text) return;
-
-      try {
-        await messagesRef.add({
-          roomId: roomId,
-          name: name,
-          text: text,
-          createdAt: firebase.firestore.FieldValue.serverTimestamp()
-        });
-        messageInput.value = "";
-      } catch (err) {
-        console.error(err);
-        alert("Failed to send message. Check console.");
-      }
-    }
-
-    sendBtn.addEventListener("click", sendMessage);
-    messageInput.addEventListener("keydown", (e) => {
-      if (e.key === "Enter" && !e.shiftKey) {
-        e.preventDefault();
-        sendMessage();
-      }
-    });
-  </script>
-</body>
-</html>
-
