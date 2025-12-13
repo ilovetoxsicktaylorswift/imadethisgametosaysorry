@@ -168,22 +168,21 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.3/firebase-firestore-compat.js"></script>
 
   <script>
-  
-  const firebaseConfig = {
-  apiKey: "AIzaSyAYTp_-KB3H1oO5ACbiHLGDZv-UhdgoCkI",
-  authDomain: "h-e-r-4fcdc.firebaseapp.com",
-  projectId: "h-e-r-4fcdc",
-  storageBucket: "h-e-r-4fcdc.firebasestorage.app",
-  messagingSenderId: "833496603768",
-  appId: "1:833496603768:web:8453e09a5239f7afd8e18d",
-  measurementId: "G-RNH6N1B944"
-};
+    // 1) REPLACE THIS CONFIG WITH YOURS FROM FIREBASE CONSOLE
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_PROJECT_ID.appspot.com",
+      messagingSenderId: "YOUR_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
 
-   
-   const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+    // 2) Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
 
-  
+    // UI elements
     const messagesDiv = document.getElementById("messages");
     const messageInput = document.getElementById("messageInput");
     const sendBtn = document.getElementById("sendBtn");
@@ -270,7 +269,7 @@ const analytics = getAnalytics(app);
       }
       if (!text) return;
 
-      try:
+      try {
         await messagesRef.add({
           roomId: roomId,
           name: name,
@@ -294,5 +293,3 @@ const analytics = getAnalytics(app);
   </script>
 </body>
 </html>
-
-
