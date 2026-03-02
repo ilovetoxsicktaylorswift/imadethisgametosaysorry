@@ -234,9 +234,9 @@
 
     // Listen for messages
     const messagesRef = db.collection("messages");
-
-messagesRef
-  .orderBy("createdAt")
+    messagesRef
+      .where("roomId", "==", ROOM_ID)
+      .orderBy("createdAt")
       .onSnapshot(
         (snapshot) => {
           statusDiv.textContent = "Online ✓";
@@ -309,11 +309,13 @@ messagesRef
       if (!text) return;
 
       sendBtn.disabled = true;
-      await messagesRef.add({
-  name: name,
-  text: text,
-  createdAt: firebase.firestore.FieldValue.serverTimestamp()
-});
+      try {
+        await messagesRef.add({
+          roomId: ROOM_ID,
+          name: name,
+          text: text,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
         messageInput.value = "";
       } catch (err) {
         console.error("Send error:", err);
@@ -333,4 +335,3 @@ messagesRef
   </script>
 </body>
 </html>
-
